@@ -15,7 +15,7 @@ class player {
 
     std::string name;
 
-    player (std::string name, int pHealth, int pArmour, int pHealAmount);
+    player (std::string pName, int pHealth, int pArmour, int pHealAmount);
 
     int getHealth ();
     void setHealth (int newHealth);
@@ -24,7 +24,7 @@ class player {
     void setHealAmount ( int newHealAmount);
 
     int getArmour ();
-    void setArmour ( int newHealAmount);
+    void setArmour ( int newArmour);
 
     void takeDamage ();
     void heal ();
