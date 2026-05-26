@@ -10,10 +10,9 @@ class player {
     int health;
     int armour;
     int healAmount;
+    std::string name;
 
     public:
-
-    std::string name;
 
     player (std::string pName, int pHealth, int pArmour, int pHealAmount);
 
@@ -25,6 +24,9 @@ class player {
 
     int getArmour ();
     void setArmour ( int newArmour);
+
+    std::string getName ();
+    void setName(std::string newName);
 
     void takeDamage ();
     void heal ();

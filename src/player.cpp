@@ -2,10 +2,14 @@
 #include <iostream>
 
 player::player (std::string pName, int pHealth, int pArmour, int pHealAmount) {
-    name = pName;
+    setName(pName);
     setArmour(pArmour);
     setHealth(pHealth);
     setHealAmount(pHealAmount);   
+}
+
+std::string player::getName ()  {
+    return name;
 }
 
 int player::getHealth () {
@@ -19,6 +23,11 @@ int player::getArmour () {
 int player::getHealAmount () {
     return healAmount;
 }
+
+void player::setName (std::string newName) {
+    name = newName;
+}
+
 
 void player::setHealth (int newHealth) {
     //clamp health to game design and prevent over healing bugs
@@ -73,19 +82,19 @@ void player::takeDamage () {
             int calculatedArmour = getArmour() - 5;
             setArmour(calculatedArmour);
 
-            std::cout << name << " took damage! New Health: " << getHealth() << std::endl;
+            std::cout << getName() << " took damage! New Health: " << getHealth() << std::endl;
         }
 
         else if (armour <= 0) {
             int calculatedHealth = getHealth() - 20;
             setHealth(calculatedHealth);
 
-            std::cout << name << " took damage! New Health: " << getHealth() << std::endl;
+            std::cout << getName() << " took damage! New Health: " << getHealth() << std::endl;
         }
     }
 
     else {
-        std::cout << name << " is dead!" << std::endl;
+        std::cout << getName() << " is dead!" << std::endl;
     }
 
 }
@@ -98,7 +107,7 @@ void player::heal () {
             int calculatedHealAmount = getHealAmount() - 20;
             setHealAmount(calculatedHealAmount);
 
-            std::cout << name << " using healing potion! New Health: " << getHealth() << ". Remaining heal amount: " << getHealAmount() << std::endl;
+            std::cout << getName() << " using healing potion! New Health: " << getHealth() << ". Remaining heal amount: " << getHealAmount() << std::endl;
         }
 
         else if (healAmount < 20 && healAmount > 0) {
@@ -107,11 +116,11 @@ void player::heal () {
             int calculatedHealAmount = getHealAmount() - getHealAmount();
             setHealAmount(0);
 
-            std::cout << name << " using remaining healing potion! New Health: " << getHealth() << ". Remaining heal amount: " << getHealAmount() << std::endl;
+            std::cout << getName() << " using remaining healing potion! New Health: " << getHealth() << ". Remaining heal amount: " << getHealAmount() << std::endl;
         }
 
         else {
-            std::cout << name << " tried healing but healing pool was empty!" << std::endl;
+            std::cout << getName() << " tried healing but healing pool was empty!" << std::endl;
         }
     }
 }
