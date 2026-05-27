@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream> //crucial library for reading and writing files!
+#include <chrono>
 
 //Function to save player data to a text file 
 void saveGame (player& p1, player& p2, int currentRound) {
@@ -100,7 +101,21 @@ int main() {
 
         //Let's simulate an auto save milestone at the end of Round 1!
         if(round==1) {
-            saveGame(player1, player2, round+1);
+
+            //Taking the starting snapshot using highest resolution clock.
+            auto startTime = std::chrono::high_resolution_clock::now();
+
+            round++;
+
+            saveGame(player1, player2, round);
+
+            //Taking the ending snapshot using highest resolution clock.
+            auto endTime = std::chrono::high_resolution_clock::now();
+
+            //Calculate the diffrence in microseconds
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+
+            std::cout << "[PROFILE] saveGame() executed in: " << duration << " microseconds." << std::endl;
             std::cout << "[SYSTEM] Stopping battle to test save file. Run the program again to resume!" << std::endl;
 
             return 0;
@@ -108,7 +123,18 @@ int main() {
 
         else {
             if(round % 3 == 0) {
-                saveGame(player1, player2, round+1);
+                auto startTime = std::chrono::high_resolution_clock::now();
+
+                int nextRound = round+1;
+                saveGame(player1, player2, nextRound);
+
+                //Taking the ending snapshot using highest resolution clock.
+                auto endTime = std::chrono::high_resolution_clock::now();
+
+                //Calculate the diffrence in microseconds
+                auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+
+                 std::cout << "[PROFILE] saveGame() executed in: " << duration << " microseconds." << std::endl;
             }
         }
 
