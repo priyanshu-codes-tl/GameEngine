@@ -28,8 +28,8 @@ class player {
     std::string getName ();
     void setName(std::string newName);
 
-    void takeDamage ();
-    void heal ();
+    std::string takeDamage ();
+    std::string heal ();
 
 };
 

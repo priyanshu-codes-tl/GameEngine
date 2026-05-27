@@ -74,53 +74,58 @@ void player::setHealAmount (int newHealAmount) {
 
 }
 
-void player::takeDamage () {
+std::string player::takeDamage () {
+
+    std::string logMessage = "";
     if(health > 0) {
         if (armour > 0) {
-            int calculatedHealth = getHealth() - 10;
-            setHealth(calculatedHealth);
-            int calculatedArmour = getArmour() - 5;
-            setArmour(calculatedArmour);
+            setHealth(getHealth() - 10);
+            setArmour(getArmour() - 5);
 
-            std::cout << getName() << " took damage! New Health: " << getHealth() << std::endl;
+            logMessage = getName() + " took damage! New Health: " + std::to_string(getHealth());
         }
 
-        else if (armour <= 0) {
-            int calculatedHealth = getHealth() - 20;
-            setHealth(calculatedHealth);
+        else {
+            setHealth(getHealth() - 20);
 
-            std::cout << getName() << " took damage! New Health: " << getHealth() << std::endl;
+            logMessage = getName() + " took Heavy damage! No Armour. New Health: " + std::to_string(getHealth());
         }
     }
 
     else {
-        std::cout << getName() << " is dead!" << std::endl;
+        logMessage = getName() + " is already dead!";
     }
+
+    //Print to console and return stat to our tracker
+    std::cout << logMessage << std::endl;
+    return logMessage;
 
 }
 
-void player::heal () {
+std::string player::heal () {
+
+    std::string logMessage = "";
+
     if (health < 70) {
         if (healAmount >= 20) {
-            int calculatedHealth = getHealth() + 20;
-            setHealth(calculatedHealth);
-            int calculatedHealAmount = getHealAmount() - 20;
-            setHealAmount(calculatedHealAmount);
+            setHealth(getHealth() + 20);
+            setHealAmount(getHealAmount() - 20);
 
-            std::cout << getName() << " using healing potion! New Health: " << getHealth() << ". Remaining heal amount: " << getHealAmount() << std::endl;
+            logMessage = getName() + " using healing potion! New Health: " + std::to_string(getHealth()) + ", Potion left: " + std::to_string(getHealAmount());
         }
 
         else if (healAmount < 20 && healAmount > 0) {
-            int calculatedHealth = getHealth() + getHealAmount();
-            setHealth(calculatedHealth);
-            int calculatedHealAmount = getHealAmount() - getHealAmount();
+            setHealth(getHealth() + getHealAmount());
             setHealAmount(0);
 
-            std::cout << getName() << " using remaining healing potion! New Health: " << getHealth() << ". Remaining heal amount: " << getHealAmount() << std::endl;
+            logMessage = getName() + " using remaining healing potion! New Health: " + std::to_string(getHealth()) + ", Potion Left: " + std::to_string(getHealAmount());
         }
 
         else {
-            std::cout << getName() << " tried healing but healing pool was empty!" << std::endl;
+            logMessage = getName() + " tried healing but potion pool was empty!";
         }
+        std::cout << logMessage << std::endl;
     }
+    
+    return logMessage;
 }

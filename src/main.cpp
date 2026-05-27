@@ -64,6 +64,13 @@ int loadGame (player& p1, player& p2) {
 }
 
 int main() {
+
+    int logCapacity = 100;      //can hold upto 100 combat event
+    int logCount = 0;           //keep tracks of how many times we've actually added
+
+    //Allocate an array of 100 string directly on the heap memory
+    std::string* combatLog = new std::string[logCapacity];
+
     player player1("Alex", 100, 20, 50);
     player player2("Roman", 100, 20, 50);
 
@@ -78,18 +85,28 @@ int main() {
         std::cout << "---Round: " << round << " ----" << std::endl;
 
         //Player1 attake player 2
-        player2.takeDamage();
-
+        if(logCount < logCapacity) {
+            combatLog[logCount] = player2.takeDamage();
+            logCount++;
+        }
+        
         //check if player2 surivied
         if (player2.getHealth() <= 0) {
             break;
         }
 
         //if player2 surivied they try to heal
-        player2.heal();
+        std::string healLog2 = player2.heal();
+        if (!healLog2.empty() && logCount < logCapacity) {
+            combatLog[logCount] = healLog2;
+            logCount++;
+        }
 
         //player2 counter attack player1
-        player1.takeDamage();
+        if (logCount < logCapacity) {
+            combatLog[logCount] = player1.takeDamage();
+            logCount++;
+        }
         
         //check if player1 died from the counter-attack  
         if (player1.getHealth() <= 0) {
@@ -97,7 +114,11 @@ int main() {
         }
 
         //if player1 survived they try to heal
-        player1.heal();
+        std::string healLog1 = player1.heal();
+        if(!healLog1.empty() && logCount < logCapacity) {
+            combatLog[logCount] = healLog1;
+            logCount++;
+        }
 
         //Let's simulate an auto save milestone at the end of Round 1!
         if(round==1) {
@@ -152,6 +173,17 @@ int main() {
     else {
         std::cout << player2.getName() << " wins!" << std::endl;
     }
+
+    std::cout << "\n======SYSTEM hard drive memory Combat Log======" << std::endl;
+
+    for(int i=0; i<logCount; i++) {
+        std::cout << "[" << i+1 << "] " << combatLog[i] << std::endl;
+    }
+
+    delete[] combatLog;
+    combatLog = nullptr;
+
+    std::cout << "[SYSTEM] Heap memory cleared successfully. Zero leaks remaining." << std::endl;
     
     
     return 0;
